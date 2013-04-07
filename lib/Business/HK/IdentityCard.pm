@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Business::HK::IdentityCard;
-our $VERSION = '0.001'; # VERSION
+our $VERSION = '0.002'; # VERSION
 
 # ABSTRACT: validate identity card numbers used in Hong Kong
 
@@ -94,7 +94,7 @@ sub _validate_checksum
 sub _calculate_checksum
 {
     # Checksum is such that the weighted sum of prefix, digits and checksum 
-    # mod 11 is 0. Prefix is converted to a number with A=1, B=2 etc.
+    # mod 11 is 0. Prefix is converted to a number.
     # Checksum is encoded as A if value is 10.
     # eg to find the checksum c in A123456(c)
     # (1*8 + 1*7 + 2*6 + 3*5 + 4*4 + 5*3 + 6*2 + c*1) % 11 = 0
@@ -104,9 +104,9 @@ sub _calculate_checksum
 
     # Build a list of components from the prefix (converted to
     # numbers) and the digits
-    my @components = map { 1 + ord($_) - ord('A') } split //, $self->{prefix};
+    my @components = $self->_prefix_as_numbers();
     push @components, split //, $self->{digits};
-    
+
     # Sum of weights * components
     my $total = 0;
     foreach my $weight (reverse(2 .. 1 + scalar @components))
@@ -121,6 +121,27 @@ sub _calculate_checksum
     return $check_digit;
 }
 
+sub _prefix_as_numbers
+{
+    # Convert the prefix characters to a list of numbers
+    # For a two char prefix, A=7, B=8 etc for the first char
+    # For the remaining char or a one char prefix, A=1, B=2 etc
+
+    my $self = shift;
+
+    my @prefix_chars = split //, $self->{prefix};
+    my @prefix_numbers;
+
+    if (scalar @prefix_chars == 2)
+    {
+        push @prefix_numbers, 7 + ord(shift @prefix_chars) - ord('A');
+    }
+
+    push @prefix_numbers, 1 + ord(shift @prefix_chars) - ord('A');
+
+    return @prefix_numbers;
+}
+
 1;
 
 __END__
@@ -133,7 +154,7 @@ Business::HK::IdentityCard - validate identity card numbers used in Hong Kong
 
 =head1 VERSION
 
-version 0.001
+version 0.002
 
 =head1 SYNOPSIS
 
@@ -155,7 +176,7 @@ details on the format.
 
 =head2 new
 
-Accepts a scalar representing the ID. IDs look like C<A123456(7)>, ie
+Accepts a scalar representing the ID. IDs look like C<A123456(3)>, ie
 an alphabetic prefix, siz digits and a check digit. The prefix can be
 one or two characters and the brackets are optional for the check
 digit.
@@ -180,7 +201,12 @@ in this format.
 
 Source code can be found on Github. Pull requests for bug fixes welcome.
 
-    L<http://github.com/rupertl/business-hk-identitycard/tree/master>
+    http://github.com/rupertl/business-hk-identitycard/tree/master
+
+=head1 THANKS
+
+Thanks to David Webb for advice on how the checksum for double prefix
+IDs should be calculated.
 
 =head1 AUTHOR
 
