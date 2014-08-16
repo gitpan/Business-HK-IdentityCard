@@ -4,7 +4,7 @@
       "Rupert Lane <rupert@rupert-lane.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300030, CPAN::Meta::Converter version 2.120630",
+   "generated_by" : "Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.140640",
    "license" : [
       "perl_5"
    ],
@@ -22,7 +22,7 @@
    "prereqs" : {
       "configure" : {
          "requires" : {
-            "ExtUtils::MakeMaker" : "6.30"
+            "ExtUtils::MakeMaker" : "0"
          }
       },
       "develop" : {
@@ -42,9 +42,11 @@
       },
       "test" : {
          "requires" : {
-            "File::Find" : "0",
-            "File::Temp" : "0",
+            "File::Spec" : "0",
+            "IO::Handle" : "0",
+            "IPC::Open3" : "0",
             "Test::More" : "0",
+            "perl" : "5.008",
             "utf8" : "0"
          }
       }
@@ -61,6 +63,6 @@
          "web" : "https://github.com/rupertl/business-hk-identitycard"
       }
    },
-   "version" : "0.002"
+   "version" : "1.000"
 }
 

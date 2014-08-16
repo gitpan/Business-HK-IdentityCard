@@ -1,7 +1,7 @@
 use strict;
 use warnings;
 package Business::HK::IdentityCard;
-our $VERSION = '0.002'; # VERSION
+our $VERSION = '1.000'; # VERSION
 
 # ABSTRACT: validate identity card numbers used in Hong Kong
 
@@ -148,13 +148,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 Business::HK::IdentityCard - validate identity card numbers used in Hong Kong
 
 =head1 VERSION
 
-version 0.002
+version 1.000
 
 =head1 SYNOPSIS
 
@@ -214,7 +216,7 @@ Rupert Lane <rupert@rupert-lane.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Rupert Lane.
+This software is copyright (c) 2014 by Rupert Lane.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
